@@ -78,13 +78,14 @@
 			}
 		}
 		count = 0;
-		for (let i = 0; i < tileCount / 3; i++) {
-			for (let j = 0; j < tileCount / 3; j++) {
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
 				count += tiles[i + (j * 3)];
 			}
 			if (count == 3 || count == -3) {
 				return count;
 			}
+			count = 0;
 		}
 		count = 0;
 		count = tiles[0] + tiles[4] + tiles[8];
