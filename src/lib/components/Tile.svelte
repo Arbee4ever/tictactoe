@@ -43,7 +43,7 @@
 
 <div class="tile" on:keydown={onClick} on:click={onClick} role="button" tabindex={index}>
 	{#if claim}
-		<img class="icon" src="/src/lib/img/{claim}.svg" alt="{claim} Claim Icon">
+		<img class="icon" src="$lib/img/{claim}.svg" alt="{claim} Claim Icon">
 		{#if showHealth}
 			<div class="health">
 				<p>{health}</p>

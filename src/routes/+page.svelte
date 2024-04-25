@@ -154,13 +154,13 @@
 <div id="top" style="--size: {size}px">
 	<div class="item {currentPlayer === 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src="/src/lib/img/X.svg" alt="Player">
+			<img src="$lib/img/X.svg" alt="Player">
 		</div>
 		<div class="score">{winsX}</div>
 	</div>
 	<div class="item {currentPlayer !== 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src="/src/lib/img/0.svg" alt="Player">
+			<img src="$lib/img/0.svg" alt="Player">
 		</div>
 		<div class="score">{wins0}</div>
 	</div>
