@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import XIcon from '$lib/img/X.svg'
+	import OIcon from '$lib/img/0.svg'
 
 	const dispatch = createEventDispatcher();
 
@@ -43,7 +45,7 @@
 
 <div class="tile" on:keydown={onClick} on:click={onClick} role="button" tabindex={index}>
 	{#if claim}
-		<img class="icon" src="$lib/img/{claim}.svg" alt="{claim} Claim Icon">
+		<img class="icon" src={claim === "X" ? XIcon : OIcon} alt="{claim} Claim Icon">
 		{#if showHealth}
 			<div class="health">
 				<p>{health}</p>

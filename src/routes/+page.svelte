@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Tile from '$lib/components/Tile.svelte';
+	import XIcon from '$lib/img/X.svg'
+	import OIcon from '$lib/img/0.svg'
 	import { onMount } from 'svelte';
 
 	let winsX = 0;
@@ -154,13 +156,13 @@
 <div id="top" style="--size: {size}px">
 	<div class="item {currentPlayer === 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src="$lib/img/X.svg" alt="Player">
+			<img src={XIcon} alt="Player">
 		</div>
 		<div class="score">{winsX}</div>
 	</div>
 	<div class="item {currentPlayer !== 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src="$lib/img/0.svg" alt="Player">
+			<img src={OIcon} alt="Player">
 		</div>
 		<div class="score">{wins0}</div>
 	</div>
