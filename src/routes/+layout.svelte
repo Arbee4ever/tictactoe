@@ -18,6 +18,24 @@
 	}
 </script>
 
+<svelte:head>
+	<meta charset='utf-8' />
+	<title>Tic Tac Toe | ARBEE</title>
+	<meta name='description' content='Small Tic tac Toe Game where only the last three moves count.' />
+	<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+	<link rel='icon' href="https://arbeeco.de/img/2022-01_ARBEE_Bild-Marke_rgb_Verlauf_01.png" />
+	<link rel='canonical' href='https://tictactoe.arbeeco.de' />
+	<meta name='twitter:card' content='summary' />
+	<meta name='twitter:site' content='@0Arbee0' />
+	<meta name='twitter:creator' content='@0Arbee0' />
+	<meta property='og:url' content='https://arbeeco.de' />
+	<meta property='og:title' content='Tic Tac Toe' />
+	<meta property='og:description' content='Small Tic tac Toe Game where only the last three moves count.' />
+	<meta property='og:image' content="https://arbeeco.de/img/2022-01_ARBEE_Bild-Marke_rgb_Verlauf_01.png" />
+	<meta name='theme-color' content='#b222a8' />
+	<meta name='keywords' content='Game, Tic Tac Toe, Arbee, Simple' />
+</svelte:head>
+
 <slot />
 
 <style lang="scss">
