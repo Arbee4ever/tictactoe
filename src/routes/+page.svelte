@@ -17,6 +17,8 @@
 		window.onresize = () => {
 			size = grid.offsetWidth;
 		};
+
+		openOnboardingModal();
 	});
 
 	let showHealth: boolean = true;
@@ -119,6 +121,11 @@
 		openModal(settingsModal);
 	}
 
+	let onboardingModal: HTMLDialogElement;
+	function openOnboardingModal() {
+		openModal(onboardingModal)
+	}
+
 	function openModal(modal: HTMLDialogElement) {
 		modal.showModal();
 		modal.addEventListener('click', e => {
@@ -194,6 +201,15 @@
 <dialog class="modal" bind:this={settingsModal}>
 	<p>Darkmode: <input type="checkbox" on:change={toggleDarkmode} checked={isDarkmode}></p>
 	<p>Show Health: <input type="checkbox" on:change={toggleHealthNums} checked={showHealth}></p>
+</dialog>
+
+<dialog class="modal" bind:this={onboardingModal}>
+	<h1>Hello there, Traveller.</h1>
+	<p>This is no ordinary Tic-Tac-Toe game. There is one extra rule:</p>
+	<p class="rule">Only the last three moves count.</p>
+	<p>So when you claim a Tile, that tile is only yours until you place the third claim after. This is shown by the small number, which decreases by one everytime you place a claim. When this number reaches zero, it disappears.</p>
+	<button on:click={() => onboardingModal.close()}>Play</button>
+	<button disabled>Play Online</button>
 </dialog>
 
 <style lang="scss">
@@ -300,6 +316,7 @@
 	}
 
 	dialog {
+		max-width: 350px	;
 		@media (prefers-color-scheme: dark) {
 			filter: invert(var(--invert));
 		}
@@ -310,6 +327,12 @@
 			@media (prefers-color-scheme: dark) {
 				filter: invert(var(--invert));
 			}
+		}
+
+		.rule {
+			outline: black 1px solid;
+			padding: 1vw;
+			background: rgba(0, 0, 0, 0.2);
 		}
 	}
 </style>
