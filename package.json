@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"peerjs": "^1.5.5",
 		"sass": "^1.75.0"
 	}
 }

@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Tile from '$lib/components/Tile.svelte';
-	import XIcon from '$lib/img/X.svg'
-	import OIcon from '$lib/img/0.svg'
+	import XIcon from '$lib/img/X.svg';
+	import OIcon from '$lib/img/0.svg';
 	import { onMount } from 'svelte';
+	import OnboardingModal from '$lib/components/OnboardingModal.svelte';
+	import SettingsModal from '$lib/components/SettingsModal.svelte';
+	import AboutModal from '$lib/components/AboutModal.svelte';
 
 	let winsX = 0;
 	let wins0 = 0;
@@ -18,13 +21,14 @@
 			size = grid.offsetWidth;
 		};
 
-		openOnboardingModal();
+		onboardingModal.open();
 	});
 
 	let showHealth: boolean = true;
 	let tileCount = 9;
 	let tiles: number[] = [];
 	let tileEls: Tile[] = [];
+	let winner: string = 'NOONE';
 
 	let currentPlayer = Math.random() >= 0.5 ? -1 : 1;
 	clearBoard();
@@ -43,11 +47,11 @@
 		let endCond = checkWin();
 		if (endCond < 0) {
 			wins0++;
-			document.getElementById('winner')!.innerText = '0 WINS!';
+			winner = '0';
 			console.log('0 WINS!');
 		} else if (endCond > 0) {
 			winsX++;
-			document.getElementById('winner')!.innerText = 'X WINS!';
+			winner = 'X';
 			console.log('X WINS!');
 		}
 		if (endCond != 0) showWinScreen();
@@ -98,12 +102,6 @@
 		return count;
 	}
 
-	let aboutModal: HTMLDialogElement;
-
-	function openAboutModal() {
-		openModal(aboutModal);
-	}
-
 	function clearBoard() {
 		gameOver = false;
 		for (let i = 0; i < tileCount; i++) {
@@ -115,50 +113,9 @@
 		currentPlayer = Math.random() >= 0.5 ? -1 : 1;
 	}
 
-	let settingsModal: HTMLDialogElement;
-
-	function openSettingsModal() {
-		openModal(settingsModal);
-	}
-
-	let onboardingModal: HTMLDialogElement;
-	function openOnboardingModal() {
-		openModal(onboardingModal)
-	}
-
-	function openModal(modal: HTMLDialogElement) {
-		modal.showModal();
-		modal.addEventListener('click', e => {
-			const dialogDimensions = modal.getBoundingClientRect();
-			if (
-				e.clientX < dialogDimensions.left ||
-				e.clientX > dialogDimensions.right ||
-				e.clientY < dialogDimensions.top ||
-				e.clientY > dialogDimensions.bottom
-			) {
-				modal.close();
-			}
-		});
-	}
-
-	function toggleDarkmode(e) {
-		if (e.target.checked == true) {
-			document.documentElement.setAttribute('data-theme', 'dark');
-		} else {
-			document.documentElement.setAttribute('data-theme', 'light');
-		}
-	}
-
-	function toggleHealthNums(e) {
-		showHealth = e.target.checked;
-	}
-
-	function isDarkmode() {
-		if(document) {
-			return document.documentElement.getAttribute("data-theme") === "dark"
-		}
-		return false;
-	}
+	let settingsModal: SettingsModal;
+	let onboardingModal: OnboardingModal;
+	let aboutModal: AboutModal;
 </script>
 
 <div id="top" style="--size: {size}px">
@@ -180,37 +137,19 @@
 		<Tile index={i} {showHealth} bind:this={tileEls[i]} on:click={onClick} on:clear={onClear}></Tile>
 	{/each}
 	<div class="winScreen" class:visible={gameOver}>
-		<p id="winner">NOONE WINS!</p>
+		<p id="winner">{winner} WINS!</p>
 		<button on:click={clearBoard}>Replay</button>
 	</div>
 </div>
 <div id="bottom" style="--size: {size}px">
-	<button on:click={openAboutModal}>About</button>
+	<button on:click={aboutModal.open}>About</button>
 	<button on:click={clearBoard}>Clear Board</button>
-	<button on:click={openSettingsModal}>Settings</button>
+	<button on:click={settingsModal.open}>Settings</button>
 </div>
 
-<dialog class="modal" bind:this={aboutModal}>
-	<p>Developed by: <a href="https://arbeeco.de">ARBEE</a></p>
-	<p>Made with: <a href="https://svelte.dev/">Svelte</a> & <a href="https://kit.svelte.dev/">SvelteKit</a></p>
-	<p>Icons from: <a href="https://lucide.dev/">Lucide</a></p>
-	<p>Font hosted by: <a href="https://fonts.bunny.net/">Bunny Fonts</a></p>
-	<p>Font from: <a href="https://www.jetbrains.com/de-de/lp/mono/">JetBrains</a></p>
-</dialog>
-
-<dialog class="modal" bind:this={settingsModal}>
-	<p>Darkmode: <input type="checkbox" on:change={toggleDarkmode} checked={isDarkmode}></p>
-	<p>Show Health: <input type="checkbox" on:change={toggleHealthNums} checked={showHealth}></p>
-</dialog>
-
-<dialog class="modal" bind:this={onboardingModal}>
-	<h1>Hello there, Traveller.</h1>
-	<p>This is no ordinary Tic-Tac-Toe game. There is one extra rule:</p>
-	<p class="rule">Only the last three moves count.</p>
-	<p>So when you claim a Tile, that tile is only yours until you place the third claim after. This is shown by the small number, which decreases by one everytime you place a claim. When this number reaches zero, it disappears.</p>
-	<button on:click={() => onboardingModal.close()}>Play</button>
-	<button disabled>Play Online</button>
-</dialog>
+<AboutModal bind:this={aboutModal}></AboutModal>
+<SettingsModal bind:this={settingsModal} bind:showHealth={showHealth}></SettingsModal>
+<OnboardingModal bind:this={onboardingModal}></OnboardingModal>
 
 <style lang="scss">
 	#top {
@@ -312,27 +251,6 @@
 			border: black 1px solid;
 			width: 100%;
 			height: fit-content;
-		}
-	}
-
-	dialog {
-		max-width: 350px	;
-		@media (prefers-color-scheme: dark) {
-			filter: invert(var(--invert));
-		}
-
-		&::backdrop {
-			background: rgba(0, 0, 0, 0.4);
-
-			@media (prefers-color-scheme: dark) {
-				filter: invert(var(--invert));
-			}
-		}
-
-		.rule {
-			outline: black 1px solid;
-			padding: 1vw;
-			background: rgba(0, 0, 0, 0.2);
 		}
 	}
 </style>
