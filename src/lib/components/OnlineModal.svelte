@@ -107,18 +107,18 @@
 		});
 	}
 
+	const shareData = $derived({
+		title: 'Tic Tac Toe',
+		text: 'Play Tic Tac Toe with a friend!',
+		url: `${window.location.href}?id=${encodeURIComponent(onlineId)}`
+	});
 	async function share() {
-		const data = {
-			title: 'Tic Tac Toe',
-			text: 'Play Tic Tac Toe with a friend!',
-			url: `${window.location.href}?id=${encodeURIComponent(onlineId)}`
-		};
 		try {
-			await navigator.share();
+			await navigator.share(shareData);
 		} catch (e) {
 			console.log('e', e);
 			try {
-				await navigator.clipboard.writeText(data.url);
+				await navigator.clipboard.writeText(shareData.url);
 			} catch (error) {
 				console.log(error);
 			}
