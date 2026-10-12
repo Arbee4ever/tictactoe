@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Tile from '$lib/components/Tile.svelte';
-	import XIcon from '$lib/img/X.svg';
-	import OIcon from '$lib/img/0.svg';
+	import Tile from '#lib/components/Tile.svelte';
+	import XIcon from '#lib/img/X.svg';
+	import OIcon from '#lib/img/0.svg';
 	import { onMount } from 'svelte';
-	import OnboardingModal from '$lib/components/OnboardingModal.svelte';
-	import SettingsModal from '$lib/components/SettingsModal.svelte';
-	import AboutModal from '$lib/components/AboutModal.svelte';
+	import OnboardingModal from '#lib/components/OnboardingModal.svelte';
+	import SettingsModal from '#lib/components/SettingsModal.svelte';
+	import AboutModal from '#lib/components/AboutModal.svelte';
 
 	let winsX = 0;
 	let wins0 = 0;
@@ -24,7 +24,6 @@
 		onboardingModal.open();
 	});
 
-	let showHealth: boolean = true;
 	let tileCount = 9;
 	let tiles: number[] = [];
 	let tileEls: Tile[] = [];
@@ -86,7 +85,7 @@
 		count = 0;
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 3; j++) {
-				count += tiles[i + (j * 3)];
+				count += tiles[i + j * 3];
 			}
 			if (count == 3 || count == -3) {
 				return count;
@@ -121,20 +120,21 @@
 <div id="top" style="--size: {size}px">
 	<div class="item {currentPlayer === 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src={XIcon} alt="Player">
+			<img src={XIcon} alt="Player" />
 		</div>
 		<div class="score">{winsX}</div>
 	</div>
 	<div class="item {currentPlayer !== 1 ? 'active' : ''}">
 		<div class="icon">
-			<img src={OIcon} alt="Player">
+			<img src={OIcon} alt="Player" />
 		</div>
 		<div class="score">{wins0}</div>
 	</div>
 </div>
 <div id="grid" style="--tile-count: {Math.sqrt(tileCount)}" bind:this={grid}>
 	{#each tiles as claim, i}
-		<Tile index={i} {showHealth} bind:this={tileEls[i]} on:click={onClick} on:clear={onClear}></Tile>
+		<Tile index={i} bind:this={tileEls[i]} on:click={onClick} on:clear={onClear}
+		></Tile>
 	{/each}
 	<div class="winScreen" class:visible={gameOver}>
 		<p id="winner">{winner} WINS!</p>
@@ -148,7 +148,7 @@
 </div>
 
 <AboutModal bind:this={aboutModal}></AboutModal>
-<SettingsModal bind:this={settingsModal} bind:showHealth={showHealth}></SettingsModal>
+<SettingsModal bind:this={settingsModal}></SettingsModal>
 <OnboardingModal bind:this={onboardingModal}></OnboardingModal>
 
 <style lang="scss">

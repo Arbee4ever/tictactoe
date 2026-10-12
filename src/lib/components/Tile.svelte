@@ -1,18 +1,11 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import XIcon from '$lib/img/X.svg'
-	import OIcon from '$lib/img/0.svg'
+	import XIcon from '#lib/img/X.svg';
+	import OIcon from '#lib/img/0.svg';
+	import { settings } from '#lib/stores/settings.svelte.ts';
 
-	const dispatch = createEventDispatcher();
-
-	function onClick() {
-		dispatch('click', {
-			index: index
-		});
-	}
-
-	let health = 3;
-	export let showHealth: boolean = true;
+	let { index, onclick, onclear } = $props();
+	let health = $state(3);
+	let claim: string | undefined = $state(undefined);
 
 	export function reduceLife() {
 		if (!claim) return;
@@ -24,12 +17,8 @@
 
 	export function clear() {
 		claim = undefined;
-		dispatch('clear', {
-			index: index
-		});
+		onclear(index);
 	}
-
-	let claim: string | undefined = undefined;
 
 	export function setClaim(newClaim: string) {
 		claim = newClaim;
@@ -39,14 +28,12 @@
 	export function getClaim() {
 		return claim;
 	}
-
-	export let index: number;
 </script>
 
-<div class="tile" on:keydown={onClick} on:click={onClick} role="button" tabindex={index}>
+<div class="tile" onkeydown={() => onclick(index)} onclick={() => onclick(index)} role="button" tabindex={index}>
 	{#if claim}
-		<img class="icon" src={claim === "X" ? XIcon : OIcon} alt="{claim} Claim Icon">
-		{#if showHealth}
+		<img class="icon" src={claim === 'X' ? XIcon : OIcon} alt="{claim} Claim Icon" />
+		{#if settings.showHealth}
 			<div class="health">
 				<p>{health}</p>
 			</div>
@@ -76,6 +63,7 @@
 			font-size: 5vh;
 			aspect-ratio: 1/1;
 			text-shadow: 0 0 5px white;
+
 			p {
 				margin: 0;
 			}

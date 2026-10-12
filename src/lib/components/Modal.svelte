@@ -3,7 +3,7 @@
 
 	export function open() {
 		modal.showModal();
-		modal.addEventListener('click', e => {
+		modal.addEventListener('click', (e) => {
 			const dialogDimensions = modal.getBoundingClientRect();
 			if (
 				e.clientX < dialogDimensions.left ||
